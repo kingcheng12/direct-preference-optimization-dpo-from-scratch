@@ -13,7 +13,7 @@ python scaffold.py
 - [x] **1.** log_softmax
 - [x] **2.** softmax
 - [x] **3.** gather_token_logprobs
-- [ ] **4.** masked_sequence_logprob
+- [x] **4.** masked_sequence_logprob
 - [ ] **5.** init_policy_params
 - [ ] **6.** policy_token_logits
 - [ ] **7.** policy_sequence_logprob
