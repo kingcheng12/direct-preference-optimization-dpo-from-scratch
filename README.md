@@ -11,7 +11,7 @@ python scaffold.py
 ## Steps
 
 - [x] **1.** log_softmax
-- [ ] **2.** softmax
+- [x] **2.** softmax
 - [ ] **3.** gather_token_logprobs
 - [ ] **4.** masked_sequence_logprob
 - [ ] **5.** init_policy_params
