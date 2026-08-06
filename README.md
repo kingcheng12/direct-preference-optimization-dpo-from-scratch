@@ -17,7 +17,7 @@ python scaffold.py
 - [x] **5.** init_policy_params
 - [x] **6.** policy_token_logits
 - [x] **7.** policy_sequence_logprob
-- [ ] **8.** sequence_logprob_grad
+- [x] **8.** sequence_logprob_grad
 - [ ] **9.** bradley_terry_loss
 - [ ] **10.** reward_accuracy
 - [ ] **11.** build_preference_pairs

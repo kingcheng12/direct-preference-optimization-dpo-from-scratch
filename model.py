@@ -89,8 +89,56 @@ def policy_sequence_logprob(params, token_ids, mask):
 
     return sequence_log_probs
 
-# Step 8 - sequence_logprob_grad (not yet solved)
-# TODO: implement
+# Step 8 - sequence_logprob_grad
+def sequence_logprob_grad(params, token_ids, mask):
+    # TODO: Compute gradients of the summed sequence log-probability w.r.t. params
+    embed = params['embed']
+    W_out = params['W_out']
+    b_out = params['b_out']
+
+    # forward
+    hidden = embed[token_ids]     
+    logits = hidden @ W_out + b_out
+
+    log_probs = log_softmax(logits, axis=-1)
+    probs = np.exp(log_probs) 
+
+    grad_logits = -probs
+    # backward
+
+    # d log p(target) / d logits = one_hot(target) - probabilities
+    batch_indices = np.arange(token_ids.shape[0])[:, None]
+    time_indices = np.arange(token_ids.shape[1])[None, :]
+
+    grad_logits[
+        batch_indices,
+        time_indices,
+        token_ids,
+    ] += 1.0
+
+    grad_logits *= mask[..., None]
+    grad_W_out = np.einsum(
+        'btd,btv->dv',
+        hidden,
+        grad_logits,
+    )
+    grad_b_out = np.sum(
+        grad_logits,
+        axis=(0, 1),
+    )
+    grad_hidden = grad_logits @ W_out.T
+    grad_embed = np.zeros_like(embed)
+    np.add.at(
+        grad_embed,
+        token_ids,
+        grad_hidden,
+    )
+
+    return {
+        'embed': grad_embed,
+        'W_out': grad_W_out,
+        'b_out': grad_b_out,
+    }
 
 # Step 9 - bradley_terry_loss (not yet solved)
 # TODO: implement
