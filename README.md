@@ -16,7 +16,7 @@ python scaffold.py
 - [x] **4.** masked_sequence_logprob
 - [x] **5.** init_policy_params
 - [x] **6.** policy_token_logits
-- [ ] **7.** policy_sequence_logprob
+- [x] **7.** policy_sequence_logprob
 - [ ] **8.** sequence_logprob_grad
 - [ ] **9.** bradley_terry_loss
 - [ ] **10.** reward_accuracy
