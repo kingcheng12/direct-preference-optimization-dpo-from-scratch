@@ -19,7 +19,7 @@ python scaffold.py
 - [x] **7.** policy_sequence_logprob
 - [x] **8.** sequence_logprob_grad
 - [x] **9.** bradley_terry_loss
-- [ ] **10.** reward_accuracy
+- [x] **10.** reward_accuracy
 - [ ] **11.** build_preference_pairs
 - [ ] **12.** sample_preference_batch
 - [ ] **13.** freeze_reference_logprobs

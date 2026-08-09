@@ -150,8 +150,11 @@ def bradley_terry_loss(reward_chosen, reward_rejected):
 
     return np.mean(scores, axis = -1)
 
-# Step 10 - reward_accuracy (not yet solved)
-# TODO: implement
+# Step 10 - reward_accuracy
+def reward_accuracy(reward_chosen, reward_rejected):
+    # TODO: Fraction of pairs where chosen reward is strictly higher than rejected.
+    
+    return np.mean(reward_chosen > reward_rejected)
 
 # Step 11 - build_preference_pairs (not yet solved)
 # TODO: implement
