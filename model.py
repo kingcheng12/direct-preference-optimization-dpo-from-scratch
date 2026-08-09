@@ -156,8 +156,22 @@ def reward_accuracy(reward_chosen, reward_rejected):
     
     return np.mean(reward_chosen > reward_rejected)
 
-# Step 11 - build_preference_pairs (not yet solved)
-# TODO: implement
+# Step 11 - build_preference_pairs
+def build_preference_pairs(prompts, chosen_ids, rejected_ids, chosen_mask, rejected_mask):
+    # TODO: Package raw arrays into a list of preference-pair dictionaries
+
+    pairs = []
+
+    for i in range(len(prompts)):
+        pairs.append({
+            'prompt': prompts[i],
+            'chosen_ids': chosen_ids[i],
+            'rejected_ids': rejected_ids[i],
+            'chosen_mask': chosen_mask[i],
+            'rejected_mask': rejected_mask[i],
+        })
+
+    return pairs
 
 # Step 12 - sample_preference_batch (not yet solved)
 # TODO: implement
