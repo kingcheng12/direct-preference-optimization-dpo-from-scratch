@@ -21,7 +21,7 @@ python scaffold.py
 - [x] **9.** bradley_terry_loss
 - [x] **10.** reward_accuracy
 - [x] **11.** build_preference_pairs
-- [ ] **12.** sample_preference_batch
+- [x] **12.** sample_preference_batch
 - [ ] **13.** freeze_reference_logprobs
 - [ ] **14.** policy_reference_logratio
 - [ ] **15.** dpo_pair_margin
