@@ -201,8 +201,32 @@ def sample_preference_batch(pairs, batch_size, rng=None):
 
     return batch
 
-# Step 13 - freeze_reference_logprobs (not yet solved)
-# TODO: implement
+# Step 13 - freeze_reference_logprobs
+def freeze_reference_logprobs(ref_params, pairs):
+    # TODO: Precompute and freeze reference-model sequence log-probabilities for every chosen and rejected response...
+
+    out = []
+
+    for pair in pairs:
+        chosen_logprob = policy_sequence_logprob(
+            ref_params,
+            pair['chosen_ids'][None, :],
+            pair['chosen_mask'][None, :],
+        )[0]
+
+        rejected_logprob = policy_sequence_logprob(
+            ref_params,
+            pair['rejected_ids'][None, :],
+            pair['rejected_mask'][None, :],
+        )[0]
+
+        new_pair = pair.copy()
+        new_pair['chosen'] = chosen_logprob
+        new_pair['rejected'] = rejected_logprob
+
+        out.append(new_pair)
+
+    return out
 
 # Step 14 - policy_reference_logratio (not yet solved)
 # TODO: implement
