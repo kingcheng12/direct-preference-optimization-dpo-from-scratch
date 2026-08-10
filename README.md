@@ -25,7 +25,7 @@ python scaffold.py
 - [x] **13.** freeze_reference_logprobs
 - [x] **14.** policy_reference_logratio
 - [x] **15.** dpo_pair_margin
-- [ ] **16.** dpo_loss
+- [x] **16.** dpo_loss
 - [ ] **17.** dpo_loss_grad
 - [ ] **18.** dpo_train_step
 - [ ] **19.** train_dpo
