@@ -228,8 +228,10 @@ def freeze_reference_logprobs(ref_params, pairs):
 
     return out
 
-# Step 14 - policy_reference_logratio (not yet solved)
-# TODO: implement
+# Step 14 - policy_reference_logratio
+def policy_reference_logratio(policy_logprob, reference_logprob):
+    # TODO: Compute the per-sequence log-ratio log pi_theta(y) - log pi_ref(y)
+    return policy_logprob - reference_logprob
 
 # Step 15 - dpo_pair_margin (not yet solved)
 # TODO: implement
