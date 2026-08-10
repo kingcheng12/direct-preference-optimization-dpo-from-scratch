@@ -265,8 +265,69 @@ def dpo_loss(policy_logprob_chosen, policy_logprob_rejected, ref_logprob_chosen,
 
     return float(np.mean(losses))
 
-# Step 17 - dpo_loss_grad (not yet solved)
-# TODO: implement
+# Step 17 - dpo_loss_grad
+def dpo_loss_grad(params, batch, ref_logprobs_batch, beta):
+    # TODO: Evaluate DPO loss and return parameter gradients for the policy
+
+    policy_chosen = policy_sequence_logprob(
+        params,
+        batch['chosen_ids'],
+        batch['chosen_mask'],
+    )
+
+    policy_rejected = policy_sequence_logprob(
+        params,
+        batch['rejected_ids'],
+        batch['rejected_mask'],
+    )
+
+    # Frozen reference log-probabilities
+    ref_chosen = ref_logprobs_batch['chosen']
+    ref_rejected = ref_logprobs_batch['rejected']
+
+    # DPO margins
+    margins = dpo_pair_margin(
+        policy_chosen,
+        policy_rejected,
+        ref_chosen,
+        ref_rejected,
+        beta,
+    )
+
+    # Mean DPO loss
+    loss = float(
+        np.mean(np.logaddexp(0.0, -margins))
+    )
+
+    B = len(margins)
+
+    # d[-log sigmoid(m)] / dm
+    # = -sigmoid(-m)
+    grad_margin = -1.0 / (1.0 + np.exp(margins))
+    grad_margin /= B
+
+    chosen_weights = beta * grad_margin
+    rejected_weights = -beta * grad_margin
+
+    # Weight each sequence's contribution to the parameter gradients.
+    chosen_grads = sequence_logprob_grad(
+        params,
+        batch['chosen_ids'],
+        batch['chosen_mask'] * chosen_weights[:, None],
+    )
+
+    rejected_grads = sequence_logprob_grad(
+        params,
+        batch['rejected_ids'],
+        batch['rejected_mask'] * rejected_weights[:, None],
+    )
+
+    grads = {
+        key: chosen_grads[key] + rejected_grads[key]
+        for key in params
+    }
+
+    return loss, grads
 
 # Step 18 - dpo_train_step (not yet solved)
 # TODO: implement
