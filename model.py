@@ -356,8 +356,63 @@ def dpo_train_step(params, batch, ref_logprobs_batch, beta, learning_rate):
 
     return new_params, metrics
 
-# Step 19 - train_dpo (not yet solved)
-# TODO: implement
+# Step 19 - train_dpo
+def train_dpo(params, pairs, ref_logprobs, beta, learning_rate, num_steps, batch_size, rng=None):
+    # TODO: Sample batches, run DPO train steps, record per-step metrics.
+
+    # Train the policy with DPO for num_steps
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    history = []
+    n = len(pairs)
+
+    for step in range(num_steps):
+        indices = rng.choice(
+            n,
+            size=batch_size,
+            replace=(batch_size > n),
+        )
+
+        batch = {
+            'chosen_ids': np.stack([
+                np.asarray(pairs[i]['chosen_ids'])
+                for i in indices
+            ]),
+            'rejected_ids': np.stack([
+                np.asarray(pairs[i]['rejected_ids'])
+                for i in indices
+            ]),
+            'chosen_mask': np.stack([
+                np.asarray(pairs[i]['chosen_mask'])
+                for i in indices
+            ]),
+            'rejected_mask': np.stack([
+                np.asarray(pairs[i]['rejected_mask'])
+                for i in indices
+            ]),
+        }
+
+        ref_batch = {
+            'chosen': np.asarray(ref_logprobs['chosen'])[indices],
+            'rejected': np.asarray(ref_logprobs['rejected'])[indices],
+        }
+
+        params, metrics = dpo_train_step(
+            params,
+            batch,
+            ref_batch,
+            beta,
+            learning_rate,
+        )
+
+        metrics = dict(metrics)
+        metrics['step'] = step
+
+        history.append(metrics)
+
+    return params, history
 
 # Step 20 - length_normalized_logprob (not yet solved)
 # TODO: implement
