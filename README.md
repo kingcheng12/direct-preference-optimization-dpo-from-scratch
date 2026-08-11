@@ -27,7 +27,7 @@ python scaffold.py
 - [x] **15.** dpo_pair_margin
 - [x] **16.** dpo_loss
 - [x] **17.** dpo_loss_grad
-- [ ] **18.** dpo_train_step
+- [x] **18.** dpo_train_step
 - [ ] **19.** train_dpo
 - [ ] **20.** length_normalized_logprob
 - [ ] **21.** ipo_loss

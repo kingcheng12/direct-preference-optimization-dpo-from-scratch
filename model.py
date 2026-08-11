@@ -329,8 +329,32 @@ def dpo_loss_grad(params, batch, ref_logprobs_batch, beta):
 
     return loss, grads
 
-# Step 18 - dpo_train_step (not yet solved)
-# TODO: implement
+# Step 18 - dpo_train_step
+import numpy as np
+
+def dpo_train_step(params, batch, ref_logprobs_batch, beta, learning_rate):
+    # TODO: Execute one DPO gradient-descent update; return updated params + metrics
+
+    # Compute DPO loss and gradients
+    loss, grads = dpo_loss_grad(
+        params,
+        batch,
+        ref_logprobs_batch,
+        beta,
+    )
+
+    # Gradient-descent update
+    new_params = {
+        name: params[name] - learning_rate * grads[name]
+        for name in params
+    }
+
+    # training metrics
+    metrics = {
+        'loss': float(loss),
+    }
+
+    return new_params, metrics
 
 # Step 19 - train_dpo (not yet solved)
 # TODO: implement
