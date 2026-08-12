@@ -423,8 +423,25 @@ def length_normalized_logprob(seq_logprob, mask):
 
     return seq_logprob / lengths
 
-# Step 21 - ipo_loss (not yet solved)
-# TODO: implement
+# Step 21 - ipo_loss
+def ipo_loss(policy_logprob_chosen, policy_logprob_rejected, ref_logprob_chosen, ref_logprob_rejected, beta):
+    # TODO: Evaluate mean squared IPO loss on unscaled log-ratio margins
+
+    chosen_logratio = (
+        policy_logprob_chosen - ref_logprob_chosen
+    )
+
+    rejected_logratio = (
+        policy_logprob_rejected - ref_logprob_rejected
+    )
+
+    margin = chosen_logratio - rejected_logratio
+
+    target = 1.0 / (2.0 * beta)
+
+    losses = (margin - target) ** 2
+
+    return float(np.mean(losses))
 
 # Step 22 - implicit_reward (not yet solved)
 # TODO: implement

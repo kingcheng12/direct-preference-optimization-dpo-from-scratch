@@ -30,7 +30,7 @@ python scaffold.py
 - [x] **18.** dpo_train_step
 - [x] **19.** train_dpo
 - [x] **20.** length_normalized_logprob
-- [ ] **21.** ipo_loss
+- [x] **21.** ipo_loss
 - [ ] **22.** implicit_reward
 - [ ] **23.** preference_accuracy
 - [ ] **24.** kl_to_reference
