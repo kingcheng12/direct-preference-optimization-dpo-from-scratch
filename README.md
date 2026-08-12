@@ -29,7 +29,7 @@ python scaffold.py
 - [x] **17.** dpo_loss_grad
 - [x] **18.** dpo_train_step
 - [x] **19.** train_dpo
-- [ ] **20.** length_normalized_logprob
+- [x] **20.** length_normalized_logprob
 - [ ] **21.** ipo_loss
 - [ ] **22.** implicit_reward
 - [ ] **23.** preference_accuracy
