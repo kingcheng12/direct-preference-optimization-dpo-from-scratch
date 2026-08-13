@@ -32,7 +32,7 @@ python scaffold.py
 - [x] **20.** length_normalized_logprob
 - [x] **21.** ipo_loss
 - [x] **22.** implicit_reward
-- [ ] **23.** preference_accuracy
+- [x] **23.** preference_accuracy
 - [ ] **24.** kl_to_reference
 - [ ] **25.** reward_margin_stats
 - [ ] **26.** evaluate_dpo
