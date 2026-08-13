@@ -33,7 +33,7 @@ python scaffold.py
 - [x] **21.** ipo_loss
 - [x] **22.** implicit_reward
 - [x] **23.** preference_accuracy
-- [ ] **24.** kl_to_reference
+- [x] **24.** kl_to_reference
 - [ ] **25.** reward_margin_stats
 - [ ] **26.** evaluate_dpo
 - [ ] **27.** run_dpo_pipeline
