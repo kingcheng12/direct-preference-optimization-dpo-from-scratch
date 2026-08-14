@@ -480,8 +480,77 @@ def reward_margin_stats(policy_logprob_chosen, policy_logprob_rejected, ref_logp
             'std_margin': float(np.std(margins)),
             'frac_positive': float(np.mean(margins > 0))}
 
-# Step 26 - evaluate_dpo (not yet solved)
-# TODO: implement
+# Step 26 - evaluate_dpo
+def evaluate_dpo(params, pairs, ref_logprobs, beta):
+    # TODO: Aggregate a full set of DPO evaluation metrics over a preference dataset.
+
+    policy_chosen = []
+    policy_rejected = []
+    ref_chosen = []
+    ref_rejected = []
+
+    for pair, ref in zip(pairs, ref_logprobs):
+        policy_chosen.append(
+            policy_sequence_logprob(
+                params,
+                pair['chosen_ids'],
+                pair['chosen_mask'],
+            )
+        )
+
+        policy_rejected.append(
+            policy_sequence_logprob(
+                params,
+                pair['rejected_ids'],
+                pair['rejected_mask'],
+            )
+        )
+
+        ref_chosen.append(ref['chosen'])
+        ref_rejected.append(ref['rejected'])
+
+    policy_chosen = np.asarray(policy_chosen, dtype=float)
+    policy_rejected = np.asarray(policy_rejected, dtype=float)
+    ref_chosen = np.asarray(ref_chosen, dtype=float)
+    ref_rejected = np.asarray(ref_rejected, dtype=float)
+
+    loss = dpo_loss(
+        policy_chosen,
+        policy_rejected,
+        ref_chosen,
+        ref_rejected,
+        beta,
+    )
+
+    accuracy = preference_accuracy(
+        policy_chosen,
+        policy_rejected,
+        ref_chosen,
+        ref_rejected,
+        beta,
+    )
+
+    margin_stats = reward_margin_stats(
+        policy_chosen,
+        policy_rejected,
+        ref_chosen,
+        ref_rejected,
+        beta,
+    )
+
+    kl = kl_to_reference(
+        np.concatenate([policy_chosen, policy_rejected]),
+        np.concatenate([ref_chosen, ref_rejected]),
+    )
+
+    return {
+        'dpo_loss': float(loss),
+        'preference_accuracy': float(accuracy),
+        'kl_to_reference': float(kl),
+        'mean_margin': float(margin_stats['mean_margin']),
+        'std_margin': float(margin_stats['std_margin']),
+        'frac_positive': float(margin_stats['frac_positive']),
+    }
 
 # Step 27 - run_dpo_pipeline (not yet solved)
 # TODO: implement
