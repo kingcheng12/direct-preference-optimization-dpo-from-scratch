@@ -552,6 +552,84 @@ def evaluate_dpo(params, pairs, ref_logprobs, beta):
         'frac_positive': float(margin_stats['frac_positive']),
     }
 
-# Step 27 - run_dpo_pipeline (not yet solved)
-# TODO: implement
+# Step 27 - run_dpo_pipeline
+def run_dpo_pipeline(vocab_size, d_model, prompts, chosen_ids, rejected_ids, chosen_mask, rejected_mask, beta, learning_rate, num_steps, batch_size, rng=None):
+    # TODO: Wire the full DPO pipeline end-to-end from raw arrays to eval...
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    # Initialize policy
+    params = init_policy_params(
+        vocab_size,
+        d_model,
+        rng=rng,
+    )
+
+    # Build preference pairs
+    pairs = build_preference_pairs(
+        prompts,
+        chosen_ids,
+        rejected_ids,
+        chosen_mask,
+        rejected_mask,
+    )
+
+    # Freeze initial policy as reference
+    ref_params = {
+        k: v.copy()
+        for k, v in params.items()
+    }
+
+    frozen_pairs = freeze_reference_logprobs(
+        ref_params,
+        pairs,
+    )
+
+    # IMPORTANT: dictionary of arrays
+    ref_logprobs = {
+        'chosen': np.asarray([
+            pair['chosen']
+            for pair in frozen_pairs
+        ]),
+        'rejected': np.asarray([
+            pair['rejected']
+            for pair in frozen_pairs
+        ]),
+    }
+
+    # Train
+    trained_params, history = train_dpo(
+        params,
+        pairs,
+        ref_logprobs,
+        beta,
+        learning_rate,
+        num_steps,
+        batch_size,
+        rng=rng,
+    )
+
+    # evaluate_dpo previously expected list-of-dicts,
+    # so convert if necessary
+    eval_ref_logprobs = [
+        {
+            'chosen': ref_logprobs['chosen'][i],
+            'rejected': ref_logprobs['rejected'][i],
+        }
+        for i in range(len(pairs))
+    ]
+
+    eval_metrics = evaluate_dpo(
+        trained_params,
+        pairs,
+        eval_ref_logprobs,
+        beta,
+    )
+
+    return {
+        'params': trained_params,
+        'history': history,
+        'eval_metrics': eval_metrics,
+    }
 

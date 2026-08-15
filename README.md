@@ -36,7 +36,7 @@ python scaffold.py
 - [x] **24.** kl_to_reference
 - [x] **25.** reward_margin_stats
 - [x] **26.** evaluate_dpo
-- [ ] **27.** run_dpo_pipeline
+- [x] **27.** run_dpo_pipeline
 
 ---
 
